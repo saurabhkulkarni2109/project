@@ -1,0 +1,41 @@
+package com.example.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(authorizeRequests ->
+                authorizeRequests
+                    .requestMatchers("/api/v1/user/**").permitAll() // Permit all requests to the user endpoint
+                    .anyRequest().authenticated() // Require authentication for other requests
+            )
+            .formLogin(formLogin ->
+                formLogin
+                    .loginPage("/login") // Custom login page
+                    .permitAll() // Allow everyone to access login page
+            )
+            .logout(logout ->
+                logout
+                    .permitAll() // Allow everyone to logout
+            )
+            .csrf(AbstractHttpConfigurer::disable); // Disable CSRF protection if needed
+
+        return http.build();
+    }
+}

@@ -1,0 +1,5 @@
+package Hotel.Management1.HotelMGT.CORS;
+
+public class WebConfig {
+
+}

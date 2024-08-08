@@ -1,0 +1,66 @@
+package com.example.payload.response;
+
+import java.math.BigDecimal;
+import java.sql.Blob;
+import java.util.List;
+
+
+public class RoomResponse {
+	private long id;
+	private String roomType;
+	private BigDecimal roomPrice;
+	private boolean isBooked = false;
+	private String photo;
+	private List<BookingResponse>bookings;
+	
+	public RoomResponse() {}
+	
+	public RoomResponse(long id, String roomType, BigDecimal roomPrice, boolean isBooked, String photo,
+			List<BookingResponse> bookings) {
+		super();
+		this.id = id;
+		this.roomType = roomType;
+		this.roomPrice = roomPrice;
+		this.isBooked = isBooked;
+		this.photo = photo;
+		this.bookings = bookings;
+	}
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public String getRoomType() {
+		return roomType;
+	}
+	public void setRoomType(String roomType) {
+		this.roomType = roomType;
+	}
+	public BigDecimal getRoomPrice() {
+		return roomPrice;
+	}
+	public void setRoomPrice(BigDecimal roomPrice) {
+		this.roomPrice = roomPrice;
+	}
+	public boolean isBooked() {
+		return isBooked;
+	}
+	public void setBooked(boolean isBooked) {
+		this.isBooked = isBooked;
+	}
+	public String getPhoto() {
+		return photo;
+	}
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+	public List<BookingResponse> getBookings() {
+		return bookings;
+	}
+	public void setBookings(List<BookingResponse> bookings) {
+		this.bookings = bookings;
+	}
+	
+	
+}

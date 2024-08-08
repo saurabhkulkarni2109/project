@@ -1,0 +1,123 @@
+/* Navbar styling */
+.navbar {
+  height: 50px;
+  background-color: #003580;
+  display: flex;
+  justify-content: center;
+}
+
+.navContainer {
+  width: 100%;
+  max-width: 1024px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-weight: 500;
+}
+
+.navButton {
+  margin-left: 20px;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  color: #003580;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: aliceblue;
+}
+
+/* Styling for user profile circle */
+.userProfile {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.userCircle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.userName {
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.dropdownItem {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #333;
+}
+
+.dropdownItem:hover {
+  background-color: #f1f1f1;
+}
+
+.navButton {
+  margin-top: 5px;
+}
+
+
+@media (max-width: 768px) {
+  .navContainer {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  .navItems {
+      margin-top: 10px;
+      flex-direction: column;
+  }
+
+  .navButton {
+      margin: 5px 0;
+  }
+
+  .userInfo {
+      margin-left: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .logo {
+      font-size: 20px;
+  }
+
+  .userCircle {
+      width: 30px;
+      height: 30px;
+      font-size: 14px;
+  }
+
+  .userName {
+      font-size: 14px;
+  }
+}

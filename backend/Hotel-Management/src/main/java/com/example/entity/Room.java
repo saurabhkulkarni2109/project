@@ -1,0 +1,140 @@
+package com.example.entity;
+
+import java.math.BigDecimal;
+import java.sql.Blob;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.RandomStringUtils;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+
+@Entity
+@Table(name="room")
+public class Room {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+	
+	@Column(name="room_type")
+	private String roomType;
+	
+	@Column(name="room_price")
+	private BigDecimal roomPrice;
+	
+	@Column(name="isBooked")
+	private boolean isBooked = false;
+	
+	@Lob
+	private Blob photo;
+	
+	@OneToMany(mappedBy = "room",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<BookRoom> bookings;
+	
+	
+	public Blob getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(Blob photo) {
+		this.photo = photo;
+	}
+
+	public Room(long id, String roomType, BigDecimal roomPrice, boolean isBooked, List<BookRoom> bookings) {
+		this.id = id;
+		this.roomType = roomType;
+		this.roomPrice = roomPrice;
+		this.isBooked = isBooked;
+		this.bookings = bookings;
+	}
+
+	public Room() {
+		this.bookings = new ArrayList<>();
+	}
+
+	public long getId() {
+		return id;
+	}
+
+
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+
+
+	public String getRoomType() {
+		return roomType;
+	}
+
+
+
+	public void setRoomType(String roomType) {
+		this.roomType = roomType;
+	}
+
+
+
+	public BigDecimal getRoomPrice() {
+		return roomPrice;
+	}
+
+
+
+	public void setRoomPrice(BigDecimal roomPrice) {
+		this.roomPrice = roomPrice;
+	}
+
+
+
+	public boolean isBooked() {
+		return isBooked;
+	}
+
+
+
+	public void setBooked(boolean isBooked) {
+		this.isBooked = isBooked;
+	}
+
+
+
+	public List<BookRoom> getBookings() {
+		return bookings;
+	}
+
+
+
+	public void setBookings(List<BookRoom> bookings) {
+		this.bookings = bookings;
+	}
+
+	public void addBooking(BookRoom booking) {
+	    if (bookings == null) {
+	        bookings = new ArrayList<>();
+	    }
+
+	    bookings.add(booking);
+	    booking.setRoom(this);
+	    isBooked = true;
+	    
+	    // Generate a booking confirmation code
+	    String bookingCode = RandomStringUtils.randomNumeric(10);
+	    
+	    // Optional: If you need to use the bookingCode, you might want to do something with it here
+	    booking.setBookingConfirmationCode(bookingCode); // Example usage, if applicable
+	}
+
+	
+}

@@ -1,0 +1,50 @@
+package com.example.services.impl;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.example.dto.LoginDTO;
+import com.example.dto.UserDTO;
+import com.example.entity.User;
+import com.example.payload.response.LoginMesage;
+import com.example.repo.UserRepo;
+import com.example.services.UserService;
+
+@Service
+public class UserImpl implements UserService {
+
+    @Autowired
+    private UserRepo repo;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
+    @Override
+    public String addUser(UserDTO userDTO) {
+        User user = new User(
+                userDTO.getId(),
+                userDTO.getFirstname(),
+                userDTO.getLastname(),
+                userDTO.getUsername(),
+                userDTO.getEmail(),
+                this.passwordEncoder.encode(userDTO.getPassword())
+                );
+        repo.save(user);
+        
+        return user.getFirstname();
+    }
+
+    @Override
+    public LoginMesage loginUser(LoginDTO loginDTO, HttpSession session) {
+        User user = repo.findByEmail(loginDTO.getEmail());
+        if (user != null && passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+            session.setAttribute("user", user); // Store user in session
+            return new LoginMesage("Login Success", true);
+        } else {
+            return new LoginMesage("Login Failed", false);
+        }
+    }
+}

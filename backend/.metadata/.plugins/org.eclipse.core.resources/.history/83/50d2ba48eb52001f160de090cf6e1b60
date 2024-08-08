@@ -1,0 +1,25 @@
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .antMatchers("/api/v1/user/**").permitAll() // Public access
+                .anyRequest().authenticated() // Authenticated access
+                .and()
+            .formLogin() // Enable form-based login
+                .loginPage("/login")
+                .permitAll()
+                .and()
+            .logout() // Enable logout
+                .permitAll()
+                .and()
+            .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED); // Create session if needed
+    }
+}

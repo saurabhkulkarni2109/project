@@ -1,0 +1,40 @@
+package com.example.services;
+
+import java.math.BigDecimal;
+import java.sql.Blob;
+
+import javax.sql.rowset.serial.SerialBlob;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.entity.Room;
+import com.example.repo.RoomRepo;
+
+@Service
+public class RoomService implements IRoomService {
+	
+	private final RoomRepo roomRepo;
+	
+	@Autowired
+    public RoomService(RoomRepo roomRepo) {
+        this.roomRepo = roomRepo;
+    }
+
+	@Override
+	public Room addNewRoom(MultipartFile file, String roomType, BigDecimal roomPrice) {
+		// TODO Auto-generated method stub
+		Room room = new Room();
+		room.setRoomType(roomType);
+		room.setRoomPrice(roomPrice);
+		if(!file.isEmpty()) {
+			byte[]photoBytes=file.getBytes();
+			Blob photoBlob = new SerialBlob(photoBytes);
+			room.setPhoto(photoBlob);
+			
+		}
+		return room;
+	}
+
+}

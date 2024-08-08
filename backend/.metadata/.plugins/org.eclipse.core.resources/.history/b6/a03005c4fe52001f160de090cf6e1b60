@@ -1,0 +1,93 @@
+package com.example.entity;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.Entity;
+
+
+@Entity
+public class Room {
+	private long id;
+	private String roomType;
+	private BigDecimal roomPrice;
+	private boolean isBooked = false;
+	private List<BookRoom> bookings;
+	
+	
+	
+	public Room(long id, String roomType, BigDecimal roomPrice, boolean isBooked, List<BookRoom> bookings) {
+		this.id = id;
+		this.roomType = roomType;
+		this.roomPrice = roomPrice;
+		this.isBooked = isBooked;
+		this.bookings = bookings;
+	}
+
+	public Room() {
+		this.bookings = new ArrayList<>();
+	}
+
+	public long getId() {
+		return id;
+	}
+
+
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+
+
+	public String getRoomType() {
+		return roomType;
+	}
+
+
+
+	public void setRoomType(String roomType) {
+		this.roomType = roomType;
+	}
+
+
+
+	public BigDecimal getRoomPrice() {
+		return roomPrice;
+	}
+
+
+
+	public void setRoomPrice(BigDecimal roomPrice) {
+		this.roomPrice = roomPrice;
+	}
+
+
+
+	public boolean isBooked() {
+		return isBooked;
+	}
+
+
+
+	public void setBooked(boolean isBooked) {
+		this.isBooked = isBooked;
+	}
+
+
+
+	public List<BookRoom> getBookings() {
+		return bookings;
+	}
+
+
+
+	public void setBookings(List<BookRoom> bookings) {
+		this.bookings = bookings;
+	}
+
+
+
+	
+}
