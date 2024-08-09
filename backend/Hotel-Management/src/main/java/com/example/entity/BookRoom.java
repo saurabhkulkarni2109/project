@@ -49,19 +49,45 @@ public class BookRoom {
 
 	public BookRoom() {}
 	
-	public BookRoom(long bookingId, LocalDate checkInDate, LocalDate checkOutDate, String guestFullName,
-			String guestEmail, int numOfAdults, int numOfChildren, int totalNumOfGuest, String bookingConfirmationCode,
-			Room room) {
+	
+
+	public BookRoom(long bookingId, LocalDate checkInDate, LocalDate checkOutDate, String bookingConfirmationCode) {
 		this.bookingId = bookingId;
 		this.checkInDate = checkInDate;
 		this.checkOutDate = checkOutDate;
-		this.guestFullName = guestFullName;
-		this.guestEmail = guestEmail;
-		NumOfAdults = numOfAdults;
-		NumOfChildren = numOfChildren;
-		this.totalNumOfGuest = totalNumOfGuest;
 		this.bookingConfirmationCode = bookingConfirmationCode;
-		this.room = room;
+	}
+
+	public int getTotalNumOfGuest() {
+		return totalNumOfGuest;
+	}
+
+	public void setTotalNumOfGuest(int totalNumOfGuest) {
+		this.totalNumOfGuest = totalNumOfGuest;
+	}
+
+	public long getBookingId() {
+		return bookingId;
+	}
+
+	public LocalDate getCheckInDate() {
+		return checkInDate;
+	}
+
+	public LocalDate getCheckOutDate() {
+		return checkOutDate;
+	}
+
+	public String getGuestFullName() {
+		return guestFullName;
+	}
+
+	public String getGuestEmail() {
+		return guestEmail;
+	}
+
+	public String getBookingConfirmationCode() {
+		return bookingConfirmationCode;
 	}
 
 	public void calculatetotalNumOfGuest() {
