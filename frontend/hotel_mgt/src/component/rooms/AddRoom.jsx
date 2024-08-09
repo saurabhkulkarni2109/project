@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { addRoom } from "../utils/ApiFunctions";
 import RoomTypeSelector from "../common/RoomTypeSelector";
+import "./addRoom.css"
 
 
 const AddRoom = () => {
@@ -17,7 +18,7 @@ const AddRoom = () => {
   const handleRoomInputChange = (e) => {
     const name = e.target.name;
     let value = e.target.value;
-  
+
     if (name === "roomPrice") {
       // Ensure `parseInt` is used correctly
       value = !isNaN(value) ? parseInt(value, 10) : "";
@@ -47,7 +48,7 @@ const AddRoom = () => {
       } else {
         setErrorMessage("Error adding room");
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   return (
@@ -56,16 +57,30 @@ const AddRoom = () => {
         <div className="row justify-content-center">
           <div className="col-md-6 col-lg-6">
             <h2 className="mt-5 mb-2">Add a New Room</h2>
+            {successMessage && (
+              <div className="alert alert-success fade show">
+                {successMessage}
+              </div>
+            )}
+
+            {errorMessage && (
+              <div className="alert alert-danger fade show">
+                {errorMessage}
+              </div>
+            )}
+
+
+
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="roomType" className="form-label">
                   Room Type
                 </label>
                 <div>
-                <RoomTypeSelector
-  handleNewRoomInputChange={handleRoomInputChange}
-  newRoom={newRoom}
-/>
+                  <RoomTypeSelector
+                    handleNewRoomInputChange={handleRoomInputChange}
+                    newRoom={newRoom}
+                  />
                 </div>
               </div>
 

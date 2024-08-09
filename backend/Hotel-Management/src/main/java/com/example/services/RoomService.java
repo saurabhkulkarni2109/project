@@ -2,7 +2,9 @@ package com.example.services;
 
 import java.math.BigDecimal;
 import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.sql.rowset.serial.SerialBlob;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import com.example.entity.Room;
+import com.example.exception.ResourseNotFoundException;
 import com.example.repo.RoomRepo;
 
 @Service
@@ -18,7 +21,7 @@ public class RoomService implements IRoomService {
     
     private final RoomRepo roomRepo;
     
-    @Autowired
+    @Autowired 
     public RoomService(RoomRepo roomRepo) {
         this.roomRepo = roomRepo;
     }
@@ -59,4 +62,24 @@ public class RoomService implements IRoomService {
             .distinct()
             .collect(Collectors.toList());
     }
+
+	@Override
+	public List<Room> getAllRooms() {
+		// TODO Auto-generated method stub
+		return roomRepo.findAll();
+	}
+
+	@Override
+	public byte[] getRoomPhotoByRoomId(long id) throws SQLException{
+		// TODO Auto-generated method stub
+		Optional<Room> theRoom = roomRepo.findById(id);
+		if(theRoom.isEmpty()) {
+			throw new ResourseNotFoundException("Sorry, Room not found");
+		}
+		Blob photoBlob = theRoom.get().getPhoto();
+		if(photoBlob != null) {
+			return photoBlob.getBytes(1, (int) photoBlob.length());
+		}
+		return null;
+	}
 }

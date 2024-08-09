@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getRoomTypes } from "../utils/ApiFunctions";
 
-const RoomTypeSelector = (handleNewRoomInputChange, newRoom) => {
-  const [roomTypes, setRoomTypes] = useState([""]);
+const RoomTypeSelector = ({ handleNewRoomInputChange, newRoom }) => {
+  const [roomTypes, setRoomTypes] = useState([]);
   const [showRoomTypeInput, setShowNewRoomTypesInput] = useState(false);
   const [newRoomTypes, setNewRoomTypes] = useState("");
 
@@ -17,9 +17,14 @@ const RoomTypeSelector = (handleNewRoomInputChange, newRoom) => {
   };
 
   const handleAddNewRoomType = () => {
-    if (newRoomTypes !== "") setRoomTypes([...roomTypes, newRoomTypes]);
+    if (newRoomTypes !== "") {
+      setRoomTypes([...roomTypes, newRoomTypes]);
+      setShowNewRoomTypesInput(false);
+      handleNewRoomInputChange({
+        target: { name: "roomType", value: newRoomTypes },
+      });
+    }
     setNewRoomTypes("");
-    setShowNewRoomTypesInput(false);
   };
 
   return (
@@ -47,7 +52,7 @@ const RoomTypeSelector = (handleNewRoomInputChange, newRoom) => {
             ))}
           </select>
           {showRoomTypeInput && (
-            <div className="input-group">
+            <div className="input-group mt-2">
               <input
                 className="form-control"
                 type="text"

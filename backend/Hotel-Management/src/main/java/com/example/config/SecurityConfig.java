@@ -24,14 +24,10 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
                     .requestMatchers("/api/v1/user/**").permitAll() // Permit all requests to the user endpoint
-                    .requestMatchers("/rooms/add/new-room").permitAll() 
+                    .requestMatchers("/rooms/**").permitAll() 
                     .anyRequest().authenticated() // Require authentication for other requests
             )
-            .formLogin(formLogin ->
-                formLogin
-                    .loginPage("/login") // Custom login page
-                    .permitAll() // Allow everyone to access login page
-            )
+
             .logout(logout ->
                 logout
                     .permitAll() // Allow everyone to logout
