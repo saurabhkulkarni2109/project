@@ -6,7 +6,7 @@ const RoomFilter = ({data,setFilteredData}) => {
     const handleSelectChange = (e) =>{
         const selectedRoomType = e.target.value
         setFilter(selectedRoomType)
-        const filteredRooms = data.filter((room) => room.roomType.toLowerCase().include(selectedRoomType.toLowerCase()))
+        const filteredRooms = data.filter((room) => room.roomType.toLowerCase().includes(selectedRoomType.toLowerCase()))
         setFilteredData(filteredRooms)
     }
 
@@ -26,8 +26,8 @@ const RoomFilter = ({data,setFilteredData}) => {
             value={filter}
             onChange={handleSelectChange}>
                 <option value={""}>select a room type to filter....</option>
-                {roomType.map((type, index)=>(
-                    <option key={index} value={type}>
+                {roomTypes.map((type, index)=>(
+                    <option key={index} value={String (type)}>
                         {type}
                     </option>
                 ))}

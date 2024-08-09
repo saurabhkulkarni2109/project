@@ -34,7 +34,7 @@ public class RoomController {
     private final BookingService bookingService;
 
     @Autowired
-    public RoomController(IRoomService roomService) {
+    public RoomController(IRoomService roomService,BookingService bookingService) {
         this.roomService = roomService;
 		this.bookingService = new BookingService();
     }
@@ -79,22 +79,32 @@ public class RoomController {
 
     
    
-	private RoomResponse getRoomResponse(Room room) throws SQLException {
-		// TODO Auto-generated method stub
-		List<BookRoom>bookings = getAllBookingsByRoomId(room.getId());
-		List<BookingResponse> bookinginfo = bookings.stream().map(booking -> new BookingResponse(booking.getBookingId(),booking.getCheckInDate(),booking.getCheckOutDate(),booking.getBookingConfirmationCode())).toList();
-		byte[]photoBytes = null;
-		Blob photoBlob = room.getPhoto();
-		if(photoBlob != null) {
-			try {
-				photoBytes = photoBlob.getBytes(1, (int) photoBlob.length());
-			} catch (SQLException e) {
-				// TODO: handle exception
-				throw new PhotoRetrivalExecution("Error Retriving photo");
-			}
-		}
-		return new RoomResponse(room.getId(), room.getRoomType(), room.getRoomPrice(),room.isBooked(),photoBytes,bookinginfo) ;
-	}
+    private RoomResponse getRoomResponse(Room room) throws SQLException {
+        List<BookRoom> bookings = getAllBookingsByRoomId(room.getId());
+        List<BookingResponse> bookinginfo = new ArrayList<>();
+
+        if (bookings != null) {
+            bookinginfo = bookings.stream()
+                .map(booking -> new BookingResponse(
+                    booking.getBookingId(),
+                    booking.getCheckInDate(),
+                    booking.getCheckOutDate(),
+                    booking.getBookingConfirmationCode()))
+                .toList();
+        }
+
+        byte[] photoBytes = null;
+        Blob photoBlob = room.getPhoto();
+        if (photoBlob != null) {
+            try {
+                photoBytes = photoBlob.getBytes(1, (int) photoBlob.length());
+            } catch (SQLException e) {
+                throw new PhotoRetrivalExecution("Error Retrieving photo");
+            }
+        }
+
+        return new RoomResponse(room.getId(), room.getRoomType(), room.getRoomPrice(), room.isBooked(), photoBytes, bookinginfo);
+    }
 
 
 	private List<BookRoom> getAllBookingsByRoomId(long id) {
