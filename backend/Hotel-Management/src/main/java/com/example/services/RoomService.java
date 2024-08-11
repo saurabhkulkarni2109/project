@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import com.example.entity.Room;
+import com.example.exception.InternalServerException;
 import com.example.exception.ResourseNotFoundException;
 import com.example.repo.RoomRepo;
 
@@ -90,5 +91,28 @@ public class RoomService implements IRoomService {
 			roomRepo.deleteById(roomId);
 		}
 		
+	}
+
+	@Override
+	public Room updateRoom(Long roomId, String roomType, BigDecimal roomPrice, byte[] photoBytes) {
+		// TODO Auto-generated method stub
+		Room room = roomRepo.findById(roomId).orElseThrow(() -> new ResourseNotFoundException("Room Not Found"));
+		if(roomType != null)room.setRoomType(roomType);
+		if(roomPrice != null)room.setRoomPrice(roomPrice);
+		if(photoBytes != null && photoBytes.length > 0) {
+			try {
+				room.setPhoto(new SerialBlob(photoBytes));
+			} catch (SQLException ex) {
+				// TODO: handle exception
+				throw new InternalServerException("Error Updating Room");
+			}
+		}
+		return roomRepo.save(room);
+	}
+
+	@Override
+	public Optional<Room> getRoomById(Long roomId) {
+		// TODO Auto-generated method stub
+		return Optional.of(roomRepo.findById(roomId).get());
 	}
 }

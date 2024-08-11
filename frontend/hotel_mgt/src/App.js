@@ -7,6 +7,8 @@ import Register from './Pages/register/Register';
 import Login from './Pages/login/Login';
 import { AuthProvider } from './context/AuthContext';
 import Room from './Pages/room/Room';
+import EditRoom from './component/rooms/EditRoom';
+import ExistingRoom from './component/rooms/ExistingRoom';
 
 
 function App() {
@@ -19,7 +21,8 @@ function App() {
           <Route path="/hotels/:id" element={<Hotel />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/room" element={<Room />} />
+          <Route path="/edit-room/:roomId" element={<EditRoom/>} />
+          <Route path="/existing-rooms" element={<ExistingRoom/>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

@@ -24,7 +24,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
                     .requestMatchers("/api/v1/user/**").permitAll() // Permit all requests to the user endpoint
-                    .requestMatchers("/rooms/**").permitAll() 
+                    .requestMatchers("/rooms/**").permitAll()
                     .anyRequest().authenticated() // Require authentication for other requests
             )
 

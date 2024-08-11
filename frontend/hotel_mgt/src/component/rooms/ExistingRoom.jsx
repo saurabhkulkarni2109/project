@@ -111,11 +111,12 @@ const ExistingRoom = () => {
             ) : (
                 <>
                     <section className='mb-5 mt-5 container'>
+                       
+                        <AddRoom onRoomAdded={handleRoomAdded} />
                         <div className="d-flex justify-content-center mb-3 mt-5">
                             <h2>Existing Rooms</h2>
                         </div>
-                        <AddRoom onRoomAdded={handleRoomAdded} />
-                        <div className="mb-3">
+                        <div className="mb-3">Filter Room By Type
                             <select
                                 className="form-control"
                                 value={selectedRoomType}
