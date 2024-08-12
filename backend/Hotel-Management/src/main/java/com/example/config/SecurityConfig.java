@@ -21,24 +21,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            .cors() // Enable CORS
+            .and()
             .authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
-                    .requestMatchers("/api/v1/user/**").permitAll() // Permit all requests to the user endpoint
-                    .requestMatchers("/rooms/**").permitAll()
-                    .anyRequest().authenticated() // Require authentication for other requests
+                .requestMatchers("/rooms/**").permitAll()
+                .requestMatchers("/api/hotels/**").permitAll()
+                .requestMatchers("/api/locations/**").permitAll()
+                    .anyRequest().permitAll() // Permits all requests
             )
-
-            .logout(logout ->
-                logout
-                    .permitAll() // Allow everyone to logout
-            )
-            .csrf(csrf -> csrf.disable()) // Disable CSRF protection if needed
+            .csrf(csrf -> csrf.disable()) // Disable CSRF
             .sessionManagement(sessionManagement ->
                 sessionManagement
-                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Create a session if needed
-                    .maximumSessions(1) // Limit the number of concurrent sessions
+                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                    .maximumSessions(1)
             );
 
         return http.build();
     }
+
+
 }

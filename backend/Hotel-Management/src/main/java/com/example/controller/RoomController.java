@@ -76,7 +76,7 @@ public class RoomController {
                 : null;
 
             RoomResponse roomResponse = getRoomResponse(room);
-            roomResponse.setPhoto(base64Photo);
+            roomResponse.setPhoto(base64Photo);	
             roomResponses.add(roomResponse);
         }
 

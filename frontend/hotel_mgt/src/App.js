@@ -6,14 +6,18 @@ import Hotel from './Pages/hotels/Hotel';
 import Register from './Pages/register/Register';
 import Login from './Pages/login/Login';
 import { AuthProvider } from './context/AuthContext';
-import Room from './Pages/room/Room';
 import EditRoom from './component/rooms/EditRoom';
 import ExistingRoom from './component/rooms/ExistingRoom';
+import { RoomProvider } from './context/RoomContext';
+import AddRoom from './component/rooms/AddRoom';
+import RoomListing from './component/rooms/RoomListing';
+import Admin from './component/admin/Admin';
 
 
 function App() {
   return (
     <AuthProvider>
+      <RoomProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -23,8 +27,13 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/edit-room/:roomId" element={<EditRoom/>} />
           <Route path="/existing-rooms" element={<ExistingRoom/>} />
+          <Route path="/add-room" element={<AddRoom/>} />
+          <Route path="/browse-all-rooms" element={<RoomListing/>} />
+          <Route path="/admin" element={<Admin/>} />
+
         </Routes>
       </BrowserRouter>
+      </RoomProvider>
     </AuthProvider>
   );
 }

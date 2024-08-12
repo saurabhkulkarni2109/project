@@ -7,9 +7,22 @@ const RoomTypeSelector = ({ handleNewRoomInputChange, newRoom }) => {
   const [newRoomTypes, setNewRoomTypes] = useState("");
 
   useEffect(() => {
-    getRoomTypes().then((data) => {
-      setRoomTypes(data);
-    });
+    const fetchRoomTypes = async () => {
+      try {
+        console.log('Fetching room types...');
+        const data = await getRoomTypes();
+        console.log('Fetched Room Types:', data);
+        if (Array.isArray(data)) {
+          setRoomTypes(data);
+        } else {
+          console.error('Unexpected data format:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching room types:', error);
+      }
+    };
+
+    fetchRoomTypes();
   }, []);
 
   const handleNewRoomTypeInputChange = (e) => {
@@ -29,47 +42,46 @@ const RoomTypeSelector = ({ handleNewRoomInputChange, newRoom }) => {
 
   return (
     <>
-      {roomTypes.length > 0 && (
-        <div>
-          <select
-            id="roomType"
-            name="roomType"
-            value={newRoom.roomType}
-            onChange={(e) => {
-              if (e.target.value === "Add New") {
-                setShowNewRoomTypesInput(true);
-              } else {
-                handleNewRoomInputChange(e);
-              }
-            }}
-          >
-            <option value={""}>Select a Room type</option>
-            <option value={"Add New"}>Add New</option>
-            {roomTypes.map((type, index) => (
-              <option key={index} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-          {showRoomTypeInput && (
-            <div className="input-group mt-2">
-              <input
-                className="form-control"
-                type="text"
-                placeholder="Enter a new Room Type"
-                onChange={handleNewRoomTypeInputChange}
-              />
-              <button
-                className="btn btn-hotel"
-                type="button"
-                onClick={handleAddNewRoomType}
-              >
-                Add
-              </button>
-            </div>
-          )}
-        </div>
-      )}
+      <div>
+        <select
+          id="roomType"
+          name="roomType"
+          value={newRoom.roomType}
+          onChange={(e) => {
+            if (e.target.value === "Add New") {
+              setShowNewRoomTypesInput(true);
+            } else {
+              handleNewRoomInputChange(e);
+            }
+          }}
+        >
+          <option value={""}>Select a Room type</option>
+          <option value={"Add New"}>Add New</option>
+          {roomTypes.length > 0 && roomTypes.map((type, index) => (
+            <option key={index} value={type}>
+              {type}
+            </option>
+          ))}
+        </select>
+        {showRoomTypeInput && (
+          <div className="input-group mt-2">
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Enter a new Room Type"
+              value={newRoomTypes}
+              onChange={handleNewRoomTypeInputChange}
+            />
+            <button
+              className="btn btn-hotel"
+              type="button"
+              onClick={handleAddNewRoomType}
+            >
+              Add
+            </button>
+          </div>
+        )}
+      </div>
     </>
   );
 };

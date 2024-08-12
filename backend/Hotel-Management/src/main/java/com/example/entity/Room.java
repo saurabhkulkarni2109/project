@@ -7,6 +7,10 @@ import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import com.example.serializer.BlobSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +24,7 @@ import jakarta.persistence.Table;
 
 
 @Entity
-@Table(name="room")
+@Table(name="rooms")
 public class Room {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +40,7 @@ public class Room {
 	private boolean isBooked = false;
 	
 	@Lob
+	@JsonSerialize(using = BlobSerializer.class)
 	private Blob photo;
 	
 	@OneToMany(mappedBy = "room",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
