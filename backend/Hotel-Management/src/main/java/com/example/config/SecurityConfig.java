@@ -26,8 +26,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
                 .requestMatchers("/rooms/**").permitAll()
-                .requestMatchers("/api/hotels/**").permitAll()
-                .requestMatchers("/api/locations/**").permitAll()
+                .requestMatchers("/hotels/**").permitAll()
+                .requestMatchers("/locations/**").permitAll()
+                .requestMatchers("/bookings/**").permitAll()
                     .anyRequest().permitAll() // Permits all requests
             )
             .csrf(csrf -> csrf.disable()) // Disable CSRF

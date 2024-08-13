@@ -22,124 +22,86 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-
 @Entity
-@Table(name="rooms")
+@Table(name = "rooms")
 public class Room {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	
-	@Column(name="room_type")
-	private String roomType;
-	
-	@Column(name="room_price")
-	private BigDecimal roomPrice;
-	
-	@Column(name="isBooked")
-	private boolean isBooked = false;
-	
-	@Lob
-	@JsonSerialize(using = BlobSerializer.class)
-	private Blob photo;
-	
-	@OneToMany(mappedBy = "room",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<BookRoom> bookings;
-	
-	
-	public Blob getPhoto() {
-		return photo;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public void setPhoto(Blob photo) {
-		this.photo = photo;
-	}
+    @Column(name = "room_type")
+    private String roomType;
 
-	public Room(long id, String roomType, BigDecimal roomPrice, boolean isBooked, List<BookRoom> bookings) {
-		this.id = id;
-		this.roomType = roomType;
-		this.roomPrice = roomPrice;
-		this.isBooked = isBooked;
-		this.bookings = bookings;
-	}
+    @Column(name = "room_price")
+    private BigDecimal roomPrice;
 
-	public Room() {
-		this.bookings = new ArrayList<>();
-	}
+    @Column(name = "isBooked")
+    private boolean isBooked = false;
 
-	public long getId() {
-		return id;
-	}
+    @Lob
+    @JsonSerialize(using = BlobSerializer.class)
+    private Blob photo;
 
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Booking> bookings = new ArrayList<>();
 
+    public Room() {}
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public Room(Long id, String roomType, BigDecimal roomPrice, boolean isBooked) {
+        this.id = id;
+        this.roomType = roomType;
+        this.roomPrice = roomPrice;
+        this.isBooked = isBooked;
+    }
 
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getRoomType() {
-		return roomType;
-	}
+    public String getRoomType() {
+        return roomType;
+    }
 
+    public void setRoomType(String roomType) {
+        this.roomType = roomType;
+    }
 
+    public BigDecimal getRoomPrice() {
+        return roomPrice;
+    }
 
-	public void setRoomType(String roomType) {
-		this.roomType = roomType;
-	}
+    public void setRoomPrice(BigDecimal roomPrice) {
+        this.roomPrice = roomPrice;
+    }
 
+    public boolean isBooked() {
+        return isBooked;
+    }
 
+    public void setBooked(boolean isBooked) {
+        this.isBooked = isBooked;
+    }
 
-	public BigDecimal getRoomPrice() {
-		return roomPrice;
-	}
+    public Blob getPhoto() {
+        return photo;
+    }
 
+    public void setPhoto(Blob photo) {
+        this.photo = photo;
+    }
 
+    public List<Booking> getBookings() {
+        return bookings;
+    }
 
-	public void setRoomPrice(BigDecimal roomPrice) {
-		this.roomPrice = roomPrice;
-	}
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
+    }
 
-
-
-	public boolean isBooked() {
-		return isBooked;
-	}
-
-
-
-	public void setBooked(boolean isBooked) {
-		this.isBooked = isBooked;
-	}
-
-
-
-	public List<BookRoom> getBookings() {
-		return bookings;
-	}
-
-
-
-	public void setBookings(List<BookRoom> bookings) {
-		this.bookings = bookings;
-	}
-
-	public void addBooking(BookRoom booking) {
-	    if (bookings == null) {
-	        bookings = new ArrayList<>();
-	    }
-
-	    bookings.add(booking);
-	    booking.setRoom(this);
-	    isBooked = true;
-	    
-	    // Generate a booking confirmation code
-	    String bookingCode = RandomStringUtils.randomNumeric(10);
-	    
-	    // Optional: If you need to use the bookingCode, you might want to do something with it here
-	    booking.setBookingConfirmationCode(bookingCode); // Example usage, if applicable
-	}
-
-	
-}
+ }

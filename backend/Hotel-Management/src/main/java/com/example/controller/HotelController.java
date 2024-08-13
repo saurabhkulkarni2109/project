@@ -1,51 +1,54 @@
 package com.example.controller;
 
 import com.example.entity.Hotel;
-import com.example.exception.ResourseNotFoundException;
-import com.example.services.HotelService;
-
+import com.example.services.IHotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/hotels")
+@RequestMapping("/hotels")
+@CrossOrigin(origins = "http://localhost:3000")
 public class HotelController {
 
+    private final IHotelService hotelService;
+
     @Autowired
-    private HotelService hotelService;
+    public HotelController(IHotelService hotelService) {
+        this.hotelService = hotelService;
+    }
 
-    // Hotel endpoints
+    @PostMapping("/add")
+    public ResponseEntity<Hotel> addNewHotel(@RequestBody Hotel hotel) {
+        Hotel savedHotel = hotelService.addNewHotel(hotel);
+        return ResponseEntity.ok(savedHotel);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Hotel>> getAllHotels() {
+        List<Hotel> hotels = hotelService.getAllHotels();
+        return ResponseEntity.ok(hotels);
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<Hotel> getHotelById(@PathVariable Long id) {
-        Hotel hotel = hotelService.findById(id);
-        if (hotel == null) {
-            throw new ResourseNotFoundException("Hotel not found with id " + id);
-        }
-        return ResponseEntity.ok(hotel);
-    }
-    @PostMapping
-    public ResponseEntity<Hotel> createHotel(@RequestBody Hotel hotel) {
-        try {
-            Hotel createdHotel = hotelService.createHotel(hotel);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdHotel);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+    public ResponseEntity<Hotel> getHotelById(@PathVariable("id") Long id) {
+        Optional<Hotel> hotel = hotelService.getHotelById(id);
+        return hotel.isPresent() ? ResponseEntity.ok(hotel.get()) : ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Hotel> updateHotel(@PathVariable Long id, @RequestBody Hotel hotel) {
-        Hotel updatedHotel = hotelService.updateHotel(id, hotel);
-        return updatedHotel != null ? new ResponseEntity<>(updatedHotel, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteHotel(@PathVariable Long id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteHotel(@PathVariable("id") Long id) {
         hotelService.deleteHotel(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Hotel> updateHotel(@PathVariable("id") Long id, @RequestBody Hotel hotel) {
+        Hotel updatedHotel = hotelService.updateHotel(id, hotel);
+        return ResponseEntity.ok(updatedHotel);
     }
 }

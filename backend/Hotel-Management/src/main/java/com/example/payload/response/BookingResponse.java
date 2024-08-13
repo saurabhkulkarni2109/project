@@ -1,12 +1,13 @@
 package com.example.payload.response;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class BookingResponse {
 	
 	private long bookingid;
-	private LocalDate checkInDate;
-	private LocalDate checkOutDate;
+	private LocalDateTime checkInDate;
+	private LocalDateTime checkOutDate;
 	private String guestName;
 	private String guestEmail;
 	private int NumOfAdults;
@@ -17,7 +18,7 @@ public class BookingResponse {
 	
 	 
 	
-	public BookingResponse(long bookingid, LocalDate checkInDate, LocalDate checkOutDate, String guestName, String guestEmail,
+	public BookingResponse(long bookingid, LocalDateTime checkInDate, LocalDateTime checkOutDate, String guestName, String guestEmail,
 			int numOfAdults, int numOfChildren, int totalNumOfGuest, String bookingConfirmationCode,
 			RoomResponse room) {
 		this.bookingid = bookingid;
@@ -33,13 +34,12 @@ public class BookingResponse {
 	}
 
 
-	public BookingResponse(long bookingId, LocalDate checkInDate, LocalDate checkOutDate,
+	public BookingResponse(long bookingId, LocalDateTime localDateTime, LocalDateTime localDateTime2,
 			String bookingConfirmationCode) {
 		this.bookingid = bookingid;
-		this.checkInDate = checkInDate;
-		this.checkOutDate = checkOutDate;
+		this.checkInDate = localDateTime;
+		this.checkOutDate = localDateTime2;
 		this.bookingConfirmationCode = bookingConfirmationCode;
 	}
-
 
 }

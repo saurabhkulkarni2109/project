@@ -1,49 +1,54 @@
 package com.example.controller;
 
 import com.example.entity.Location;
-import com.example.services.LocationService;
-
+import com.example.services.ILocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/locations")
+@RequestMapping("/locations")
+@CrossOrigin(origins = "http://localhost:3000")
 public class LocationController {
 
-    @Autowired
-    private LocationService locationService;
+    private final ILocationService locationService;
 
-    @PostMapping
-    public ResponseEntity<Location> createLocation(@RequestBody Location location) {
-        Location createdLocation = locationService.createLocation(location);
-        return new ResponseEntity<>(createdLocation, HttpStatus.CREATED);
+    @Autowired
+    public LocationController(ILocationService locationService) {
+        this.locationService = locationService;
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<Location> addNewLocation(@RequestBody Location location) {
+        Location savedLocation = locationService.addNewLocation(location);
+        return ResponseEntity.ok(savedLocation);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Location>> getAllLocations() {
+        List<Location> locations = locationService.getAllLocations();
+        return ResponseEntity.ok(locations);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Location> getLocationById(@PathVariable Long id) {
-        Location location = locationService.getLocationById(id);
-        return location != null ? new ResponseEntity<>(location, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Location> getLocationById(@PathVariable("id") Long id) {
+        Optional<Location> location = locationService.getLocationById(id);
+        return location.isPresent() ? ResponseEntity.ok(location.get()) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<Location>> getAllLocations() {
-        List<Location> locations = locationService.getAllLocations();
-        return new ResponseEntity<>(locations, HttpStatus.OK);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteLocation(@PathVariable("id") Long id) {
+        locationService.deleteLocation(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Location> updateLocation(@PathVariable Long id, @RequestBody Location location) {
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Location> updateLocation(@PathVariable("id") Long id, @RequestBody Location location) {
         Location updatedLocation = locationService.updateLocation(id, location);
-        return updatedLocation != null ? new ResponseEntity<>(updatedLocation, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteLocation(@PathVariable Long id) {
-        boolean isRemoved = locationService.deleteLocation(id);
-        return isRemoved ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(updatedLocation);
     }
 }

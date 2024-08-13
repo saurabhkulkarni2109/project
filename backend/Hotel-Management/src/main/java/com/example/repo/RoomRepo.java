@@ -8,6 +8,5 @@ import org.springframework.data.jpa.repository.Query;
 import com.example.entity.Room;
 
 public interface RoomRepo extends JpaRepository<Room, Long> {
-//	@Query("SELECT DISTINCT r.roomType FROM Room r")
-//	List <String> findDistinctRoomTypes();
+
 }

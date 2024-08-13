@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.entity.BookRoom;
+import com.example.entity.Booking; // Import Booking instead of BookRoom
 import com.example.entity.Room;
 import com.example.exception.PhotoRetrivalExecution;
 import com.example.exception.ResourseNotFoundException;
@@ -36,7 +36,7 @@ import com.example.services.IRoomService;
 
 @RestController
 @RequestMapping("/rooms")
-@CrossOrigin(origins = "http://localhost:3000") 
+@CrossOrigin(origins = "http://localhost:3000")
 public class RoomController {
 
     private final IRoomService roomService;
@@ -71,18 +71,18 @@ public class RoomController {
 
         for (Room room : rooms) {
             byte[] photoBytes = roomService.getRoomPhotoByRoomId(room.getId());
-            String base64Photo = (photoBytes != null && photoBytes.length > 0) 
-                ? Base64.encodeBase64String(photoBytes) 
+            String base64Photo = (photoBytes != null && photoBytes.length > 0)
+                ? Base64.encodeBase64String(photoBytes)
                 : null;
 
             RoomResponse roomResponse = getRoomResponse(room);
-            roomResponse.setPhoto(base64Photo);	
+            roomResponse.setPhoto(base64Photo);
             roomResponses.add(roomResponse);
         }
 
         return ResponseEntity.ok(roomResponses);
     }
-    
+
     @DeleteMapping("/delete/room/{roomId}")
     public ResponseEntity<Void> deleteRoom(@PathVariable("roomId") Long roomId) {
         roomService.deleteRoom(roomId);
@@ -95,26 +95,25 @@ public class RoomController {
             @RequestParam(required = false) String roomType,
             @RequestParam(required = false) BigDecimal roomPrice,
             @RequestParam(required = false) MultipartFile photo) throws IOException, SQLException {
-        
+
         byte[] photoBytes = (photo != null && !photo.isEmpty()) ? photo.getBytes() : roomService.getRoomPhotoByRoomId(roomId);
         Blob photoBlob = (photoBytes != null && photoBytes.length > 0) ? new SerialBlob(photoBytes) : null;
-        
+
         Room updatedRoom = roomService.updateRoom(roomId, roomType, roomPrice, photoBytes);
         updatedRoom.setPhoto(photoBlob);
-        
+
         RoomResponse roomResponse = getRoomResponse(updatedRoom);
         return ResponseEntity.ok(roomResponse);
     }
-    
+
     @GetMapping("/rooms/{id}")
     public ResponseEntity<Room> getRoomById(@PathVariable("id") Long id) {
         Optional<Room> room = roomService.getRoomById(id);
         return room.isPresent() ? ResponseEntity.ok(room.get()) : ResponseEntity.notFound().build();
     }
 
-    
     private RoomResponse getRoomResponse(Room room) throws SQLException {
-        List<BookRoom> bookings = getAllBookingsByRoomId(room.getId());
+        List<Booking> bookings = getAllBookingsByRoomId(room.getId()); // Use Booking here
         List<BookingResponse> bookingInfo = new ArrayList<>();
 
         if (bookings != null) {
@@ -140,9 +139,7 @@ public class RoomController {
         return new RoomResponse(room.getId(), room.getRoomType(), room.getRoomPrice(), room.isBooked(), photoBytes, bookingInfo);
     }
 
-    private List<BookRoom> getAllBookingsByRoomId(long id) {
-        return bookingService.getAllBookingByRoomId(id); 
+    private List<Booking> getAllBookingsByRoomId(long id) {
+        return bookingService.getAllBookingByRoomId(id); // Use Booking here
     }
 }
-
-

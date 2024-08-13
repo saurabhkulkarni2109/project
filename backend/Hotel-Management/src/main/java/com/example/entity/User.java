@@ -1,113 +1,100 @@
 package com.example.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name="Hotel_Mgt")
+@Table(name = "users") // Changed to "users" for better naming convention
 public class User {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-	
-    @Column(name="firstname")
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "firstname")
     private String firstname;
-    
-    @Column(name="lastname")
+
+    @Column(name = "lastname")
     private String lastname;
-    
-	
-    @Column(name="username")
+
+    @Column(name = "username")
     private String username;
-    
-	
-    @Column(name="email")
+
+    @Column(name = "email")
     private String email;
-    
-	
-    @Column(name="password")
+
+    @Column(name = "password")
     private String password;
-    
-    
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Booking> bookings = new ArrayList<>();
+
     public User() {}
 
+    public User(Long id, String firstname, String lastname, String username, String email, String password) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 
-	public User(long id, String firstname, String lastname, String username, String email, String password) {
-		super();
-		this.id = id;
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.username = username;
-		this.email = email;
-		this.password = password;
-	}
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public long getId() {
-		return id;
-	}
+    public String getFirstname() {
+        return firstname;
+    }
 
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public String getLastname() {
+        return lastname;
+    }
 
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-	public String getFirstname() {
-		return firstname;
-	}
+    public String getUsername() {
+        return username;
+    }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getLastname() {
-		return lastname;
-	}
+    public String getPassword() {
+        return password;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+    public List<Booking> getBookings() {
+        return bookings;
+    }
 
-
-	public String getUsername() {
-		return username;
-	}
-
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-
-	public String getEmail() {
-		return email;
-	}
-
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-
-	public String getPassword() {
-		return password;
-	}
-
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-
-	
-    
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
+    }
 }
